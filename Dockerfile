@@ -1,4 +1,4 @@
-FROM ubuntu:14.04
+FROM ubuntu:16.04
 MAINTAINER Erik Ferlanti <eferlanti@tacc.utexas.edu>
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -10,7 +10,7 @@ ENV HTSLIB_DOWNLOAD_URL https://github.com/samtools/htslib/releases/download/1.3
 
 RUN buildDeps='gcc libc6-dev make zlib1g-dev' \
     && set -x \
-    && apt-get update && apt-get install -y $buildDeps genometools --no-install-recommends \
+    && apt-get update && apt-get install -y $buildDeps bzip2 genometools --no-install-recommends \
     && rm -rf /var/lib/apt/lists/* \
     && wget "$HTSLIB_DOWNLOAD_URL" \
     && mkdir -p /usr/src/htslib \
@@ -30,6 +30,10 @@ RUN mkdir /usr/local/icommands \
 
 ENV PATH "$PATH:/usr/local/icommands/bin"
 
+COPY src/process_gff.sh /usr/local/bin
+
 RUN mkdir /data
 
 WORKDIR /data
+
+ENTRYPOINT ["/usr/local/bin/process_gff.sh"]
