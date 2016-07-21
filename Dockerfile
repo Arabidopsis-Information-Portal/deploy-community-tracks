@@ -1,9 +1,21 @@
+######################################################
+#
+# Araport Deploy community JBrowse tracks Image
+# Tag: araport/deploy-community-tracks
+#
+# This container a Cyverse-branded, customized Agave CLI
+#
+# docker run -it -v $HOME/.agave:/root/.agave -v ${PWD}:/data araport/deploy-community-tracks [GFF-file]
+#
+######################################################
 FROM ubuntu:16.04
 MAINTAINER Erik Ferlanti <eferlanti@tacc.utexas.edu>
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
     wget \
+    curl \
+    vim.tiny \
     && rm -rf /var/lib/apt/lists/*
 
 ENV HTSLIB_DOWNLOAD_URL https://github.com/samtools/htslib/releases/download/1.3.1/htslib-1.3.1.tar.bz2
@@ -21,14 +33,9 @@ RUN buildDeps='gcc libc6-dev make zlib1g-dev' \
     && rm -r /usr/src/htslib \
     && apt-get purge -y --auto-remove $buildDeps
 
-ENV ICOMMANDS_DOWNLOAD_URL https://pods.iplantcollaborative.org/wiki/download/attachments/6720192/icommands-3.3.1-linux-autobuf.tgz
+ADD cyverse-cli.tgz /usr/local
 
-RUN mkdir /usr/local/icommands \
-    && wget "$ICOMMANDS_DOWNLOAD_URL" \
-    && tar -zxf icommands-3.3.1-linux-autobuf.tgz -C /usr/local/icommands --strip-components=1 \
-    && rm icommands-3.3.1-linux-autobuf.tgz
-
-ENV PATH "$PATH:/usr/local/icommands/bin"
+RUN /usr/local/cyverse-cli/bin/tenants-init -b -t iplantc.org
 
 COPY src/process_gff.sh /usr/local/bin
 
