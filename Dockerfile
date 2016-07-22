@@ -1,9 +1,10 @@
 ######################################################
 #
-# Araport Deploy community JBrowse tracks Image
+# Araport - Deploy community JBrowse tracks Image
 # Tag: araport/deploy-community-tracks
 #
-# This container a Cyverse-branded, customized Agave CLI
+# This container makes GFF3 files available as community
+# JBrowse tracks on Araport.
 #
 # docker run -it -v $HOME/.agave:/root/.agave -v ${PWD}:/data araport/deploy-community-tracks [GFF-file]
 #

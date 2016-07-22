@@ -3,7 +3,6 @@
 
 tool_version := $(shell cat VERSION)
 
-PREFIX := $(HOME)
 CLI_GIT_REPO := 'https://bitbucket.org/agaveapi/cli'
 
 TOOL = deploy-community-tracks
@@ -25,21 +24,10 @@ cli: git-test
 clean:
 	rm -rf $(OBJ) cli
 
-.SILENT: install
-install: $(OBJ)
-	cp -fr $(OBJ) $(PREFIX)
-	rm -rf $(OBJ)
-	echo "Installed in $(PREFIX)/$(OBJ)"
-	echo "Ensure that $(PREFIX)/$(OBJ)/bin is in your PATH."
-
-.SILENT: uninstall
-uninstall:
-	if [ -d $(PREFIX)/$(OBJ) ];then rm -rf $(PREFIX)/$(OBJ); echo "Uninstalled $(PREFIX)/$(OBJ)."; exit 0; fi
-
 .SILENT: update
 update: clean git-test
 	git pull
-	if [ $$? -eq 0 ] ; then echo "Now, run make && make install."; exit 0; fi
+	if [ $$? -eq 0 ] ; then echo "Now, run make."; exit 0; fi
 
 .SILENT: git-test
 git-test:
