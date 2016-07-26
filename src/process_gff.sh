@@ -1,10 +1,12 @@
 #!/bin/sh
 
-set -e
+set -euo pipefail
+#set -x
 
 SYSTEMID="data.iplantcollaborative.org"
 SHARED_DIR="eriksf/share"
 TRACK_URL_BASE="https://de.iplantcollaborative.org/anon-files/iplant/home"
+
 FULL_GFF=$1
 BASE_GFF=$(basename "$FULL_GFF")
 NAME_GFF=${BASE_GFF%.*}
@@ -27,20 +29,20 @@ bgzip "$SORTED_GFF"
 tabix -p gff "$GZIP_GFF"
 
 # upload the files to iplant
-/usr/local/cyverse-cli/bin/files-upload -f -S ${SYSTEMID} -F "${GZIP_GFF}" "${SHARED_DIR}"
-/usr/local/cyverse-cli/bin/files-upload -f -S ${SYSTEMID} -F "${TABIX_GFF}" "${SHARED_DIR}"
+/usr/local/cyverse-cli/bin/files-upload -f -S "$SYSTEMID" -F "$GZIP_GFF" "$SHARED_DIR"
+/usr/local/cyverse-cli/bin/files-upload -f -S "$SYSTEMID" -F "$TABIX_GFF" "$SHARED_DIR"
 
 # construct (and upload) a JBrowse config file referencing the GFF3 file
-cat <<EOT >> "${JBROWSE_CONF}"
-[tracks.${NAME_GFF}]
+cat <<EOT >> "$JBROWSE_CONF"
+[tracks.$NAME_GFF]
 storeClass  = JBrowse/Store/SeqFeature/GFF3Tabix
 type        = JBrowse/View/Track/CanvasFeatures
 category    = Community Data Tracks
-key         = ${NAME_GFF}
-urlTemplate = ${TRACK_URL_BASE}/${SHARED_DIR}/${SORTED_GFF}.gz
+key         = $NAME_GFF
+urlTemplate = $TRACK_URL_BASE/$SHARED_DIR/${SORTED_GFF}.gz
 EOT
 
-/usr/local/cyverse-cli/bin/files-upload -f -S ${SYSTEMID} -F "${JBROWSE_CONF}" "${SHARED_DIR}"
+/usr/local/cyverse-cli/bin/files-upload -f -S "$SYSTEMID" -F "$JBROWSE_CONF" "$SHARED_DIR"
 
 # make share directory readable by anonymous
-/usr/local/cyverse-cli/bin/files-pems-update -f -R -S ${SYSTEMID} -U anonymous -P READ "${SHARED_DIR}"
+/usr/local/cyverse-cli/bin/files-pems-update -f -R -S "$SYSTEMID" -U anonymous -P READ "$SHARED_DIR"
