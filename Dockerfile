@@ -38,10 +38,10 @@ ADD cyverse-cli.tgz /usr/local
 
 RUN /usr/local/cyverse-cli/bin/tenants-init -b -t iplantc.org
 
-COPY src/process_gff.sh /usr/local/bin
+COPY src/process_genomic_data_format_files.sh /usr/local/bin
 
 RUN mkdir /data
 
 WORKDIR /data
 
-ENTRYPOINT ["/usr/local/bin/process_gff.sh"]
+ENTRYPOINT ["/usr/local/bin/process_genomic_data_format_files.sh"]
