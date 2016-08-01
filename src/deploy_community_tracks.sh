@@ -1,7 +1,9 @@
 #!/bin/bash
 
 set -euo pipefail
-set -x
+#set -x
+
+IMAGENAME="{{IMAGENAME}}"
 
 # Usage info
 show_help() {
@@ -16,9 +18,18 @@ on the Araport JBrowse instance.
 EOF
 }
 
+die() {
+	echo "$1" 1>&2
+	exit 1
+}
+
+realpath() {
+    echo "$(cd "$(dirname "$1")"; pwd)"
+}
+
 # Process command line options
 OPTIND=1
-while getopts "hvd:e:" OPT; do
+while getopts "hvd:" OPT; do
     case "$OPT" in
         h)
             show_help
@@ -51,7 +62,10 @@ if [[ -z "${description// }" ]]; then
     exit 1
 fi
 
-gdf_file=$1
+# check for docker install
+docker info > /dev/null || die "Docker is not installed. Exiting."
 
-echo "File: $gdf_file"
-echo "Description: $description"
+gdf_path=$(realpath "$1")
+gdf_file=$(basename "$1")
+
+docker run -v "${HOME}/.agave:/root/.agave" -v "${gdf_path}:/data" "${IMAGENAME}:latest" "$gdf_file" "$description"

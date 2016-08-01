@@ -11,7 +11,7 @@ ARAPORT_USER := 'araport'
 
 CLI_GIT_REPO := 'https://bitbucket.org/agaveapi/cli'
 
-TOOL = deploy-community-tracks
+TOOL := 'araport/deploy-community-tracks'
 OBJ = cyverse-cli
 SRC = src
 BIN = bin
@@ -41,6 +41,7 @@ templatize:
 		-e 's|{{ARAPORT_USER}}|$(ARAPORT_USER)|g' \
 		$(SRC)/process_genomic_data_format_files.sh > $(BIN)/process_genomic_data_format_files.sh
 	sed -e 's|{{tool_version}}|$(tool_version)|g' \
+		-e 's|{{IMAGENAME}}|$(TOOL)|g' \
 		$(SRC)/deploy_community_tracks.sh > $(BIN)/deploy_community_tracks.sh
 	find $(BIN) -type f -name '*.sh' -exec chmod a+rx {} \;
 
