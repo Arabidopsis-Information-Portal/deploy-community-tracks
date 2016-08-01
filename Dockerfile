@@ -3,10 +3,10 @@
 # Araport - Deploy community JBrowse tracks Image
 # Tag: araport/deploy-community-tracks
 #
-# This container makes GFF3 files available as community
+# This container makes genomic data format files (GFF, BED, & VCF) available as community
 # JBrowse tracks on Araport.
 #
-# docker run -it -v $HOME/.agave:/root/.agave -v ${PWD}:/data araport/deploy-community-tracks [GFF-file]
+# docker run -it -v $HOME/.agave:/root/.agave -v ${PWD}:/data araport/deploy-community-tracks [GDF-file]
 #
 ######################################################
 FROM ubuntu:16.04
@@ -38,7 +38,7 @@ ADD cyverse-cli.tgz /usr/local
 
 RUN /usr/local/cyverse-cli/bin/tenants-init -b -t iplantc.org
 
-COPY src/process_genomic_data_format_files.sh /usr/local/bin
+COPY bin/process_genomic_data_format_files.sh /usr/local/bin
 
 RUN mkdir /data
 

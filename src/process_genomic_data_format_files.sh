@@ -1,15 +1,16 @@
 #!/bin/bash
 
 set -euo pipefail
-set -x
+#set -x
 
-SYSTEMID="data.iplantcollaborative.org"
-SHARED_DIR="eriksf/share"
-TRACK_URL_BASE="https://de.iplantcollaborative.org/anon-files/iplant/home"
+SYSTEM_ID="{{SYSTEM_ID}}"
+SHARED_DIR="{{SHARED_DIR}}"
+TRACK_URL_BASE="{{TRACK_URL_BASE}}"
+ANONYMOUS_USER="{{ANONYMOUS_USER}}"
+ARAPORT_USER="{{ARAPORT_USER}}"
 
 FULL_GDF=$1
 DESCRIPTION=$2
-SUBMITTER_EMAIL=$3
 
 # determine type and generate filenames
 BASE_GDF=$(basename "$FULL_GDF")
@@ -50,8 +51,8 @@ bgzip "$SORTED_GDF"
 tabix -p "$FILE_TYPE" "$GZIP_GDF"
 
 # upload the files to iplant
-/usr/local/cyverse-cli/bin/files-upload -f -S "$SYSTEMID" -F "$GZIP_GDF" "$SHARED_DIR"
-/usr/local/cyverse-cli/bin/files-upload -f -S "$SYSTEMID" -F "$TABIX_GDF" "$SHARED_DIR"
+/usr/local/cyverse-cli/bin/files-upload -f -S "$SYSTEM_ID" -F "$GZIP_GDF" "$SHARED_DIR"
+/usr/local/cyverse-cli/bin/files-upload -f -S "$SYSTEM_ID" -F "$TABIX_GDF" "$SHARED_DIR"
 
 # construct (and upload) a JBrowse config file referencing the GFF3 file
 cat <<EOT >> "$JBROWSE_CONF"
@@ -63,9 +64,9 @@ key         = $DESCRIPTION
 urlTemplate = $TRACK_URL_BASE/$SHARED_DIR/${SORTED_GDF}.gz
 EOT
 
-/usr/local/cyverse-cli/bin/files-upload -f -S "$SYSTEMID" -F "$JBROWSE_CONF" "$SHARED_DIR"
+/usr/local/cyverse-cli/bin/files-upload -f -S "$SYSTEM_ID" -F "$JBROWSE_CONF" "$SHARED_DIR"
 
 # make share directory readable by anonymous
-/usr/local/cyverse-cli/bin/files-pems-update -f -R -S "$SYSTEMID" -U anonymous -P READ "$SHARED_DIR"
-
-# email araport@jcvi.org to notify of track upload
+/usr/local/cyverse-cli/bin/files-pems-update -f -R -S "$SYSTEM_ID" -U "$ANONYMOUS_USER" -P READ "$SHARED_DIR"
+# make share directory readable and writable by araport
+/usr/local/cyverse-cli/bin/files-pems-update -f -R -S "$SYSTEM_ID" -U "$ARAPORT_USER" -P READ_WRITE "$SHARED_DIR"
