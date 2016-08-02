@@ -2,6 +2,8 @@
 # July 10, 2016
 
 tool_version := $(shell cat VERSION)
+agave_api_version := v2
+agave_api_release := 2.1.5
 
 SYSTEM_ID := 'data.iplantcollaborative.org'
 SHARED_DIR := 'eriksf/share'
@@ -12,7 +14,7 @@ ARAPORT_USER := 'araport'
 CLI_GIT_REPO := 'https://bitbucket.org/agaveapi/cli'
 
 TOOL := 'araport/deploy-community-tracks'
-OBJ = cyverse-cli
+OBJ = agave-cli
 SRC = src
 BIN = bin
 SOURCES = templatize
@@ -73,3 +75,10 @@ docker-release: docker
 
 docker-clean:
 	build/docker.sh $(TOOL) $(tool_version) clean
+
+.SILENT: release
+release:
+	git diff-index --quiet HEAD
+	if [ $$? -ne 0 ]; then echo "You have unstaged changes. Please commit or discard then re-run make clean && make release."; exit 0; fi
+	git tag -a "v$(tool_version)" -m "$(TOOL) $(tool_version). Requires Agave API $(agave_api_version)/$(agave_api_release)."
+	git push origin "v$(tool_version)"

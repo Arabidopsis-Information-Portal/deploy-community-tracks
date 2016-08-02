@@ -34,9 +34,9 @@ RUN buildDeps='gcc libc6-dev make zlib1g-dev' \
     && rm -r /usr/src/htslib \
     && apt-get purge -y --auto-remove $buildDeps
 
-ADD cyverse-cli.tgz /usr/local
+ADD agave-cli.tgz /usr/local
 
-RUN /usr/local/cyverse-cli/bin/tenants-init -b -t iplantc.org
+RUN /usr/local/agave-cli/bin/tenants-init -b -t iplantc.org
 
 COPY bin/process_genomic_data_format_files.sh /usr/local/bin
 COPY bin/normalize_athaliana_chrom_ids.pl /usr/local/bin

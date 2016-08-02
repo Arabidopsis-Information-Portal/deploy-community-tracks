@@ -57,8 +57,8 @@ bgzip "$SORTED_GDF"
 tabix -p "$FILE_TYPE" "$GZIP_GDF"
 
 # upload the files to iplant
-/usr/local/cyverse-cli/bin/files-upload -f -S "$SYSTEM_ID" -F "$GZIP_GDF" "$SHARED_DIR"
-/usr/local/cyverse-cli/bin/files-upload -f -S "$SYSTEM_ID" -F "$TABIX_GDF" "$SHARED_DIR"
+/usr/local/agave-cli/bin/files-upload -f -S "$SYSTEM_ID" -F "$GZIP_GDF" "$SHARED_DIR"
+/usr/local/agave-cli/bin/files-upload -f -S "$SYSTEM_ID" -F "$TABIX_GDF" "$SHARED_DIR"
 
 # construct (and upload) a JBrowse config file referencing the GFF3 file
 cat <<EOT >> "$JBROWSE_CONF"
@@ -70,9 +70,9 @@ key         = $DESCRIPTION
 urlTemplate = $TRACK_URL_BASE/$SHARED_DIR/${SORTED_GDF}.gz
 EOT
 
-/usr/local/cyverse-cli/bin/files-upload -f -S "$SYSTEM_ID" -F "$JBROWSE_CONF" "$SHARED_DIR"
+/usr/local/agave-cli/bin/files-upload -f -S "$SYSTEM_ID" -F "$JBROWSE_CONF" "$SHARED_DIR"
 
 # make share directory readable by anonymous
-/usr/local/cyverse-cli/bin/files-pems-update -f -R -S "$SYSTEM_ID" -U "$ANONYMOUS_USER" -P READ "$SHARED_DIR"
+/usr/local/agave-cli/bin/files-pems-update -f -R -S "$SYSTEM_ID" -U "$ANONYMOUS_USER" -P READ "$SHARED_DIR"
 # make share directory readable and writable by araport
-/usr/local/cyverse-cli/bin/files-pems-update -f -R -S "$SYSTEM_ID" -U "$ARAPORT_USER" -P READ_WRITE "$SHARED_DIR"
+/usr/local/agave-cli/bin/files-pems-update -f -R -S "$SYSTEM_ID" -U "$ARAPORT_USER" -P READ_WRITE "$SHARED_DIR"
