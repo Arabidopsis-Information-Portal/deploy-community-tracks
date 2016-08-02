@@ -43,7 +43,8 @@ templatize:
 	sed -e 's|{{tool_version}}|$(tool_version)|g' \
 		-e 's|{{IMAGENAME}}|$(TOOL)|g' \
 		$(SRC)/deploy_community_tracks.sh > $(BIN)/deploy_community_tracks.sh
-	find $(BIN) -type f -name '*.sh' -exec chmod a+rx {} \;
+	cp $(SRC)/normalize_athaliana_chrom_ids.pl $(BIN)/.
+	find $(BIN) -type f \( -name '*.sh' -o -name '*.pl' \) -exec chmod a+rx {} \;
 
 .PHONY: clean
 clean:
