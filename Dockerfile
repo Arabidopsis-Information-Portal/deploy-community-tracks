@@ -23,7 +23,7 @@ ENV HTSLIB_DOWNLOAD_URL https://github.com/samtools/htslib/releases/download/1.3
 
 RUN buildDeps='gcc libc6-dev make zlib1g-dev' \
     && set -x \
-    && apt-get update && apt-get install -y $buildDeps bzip2 genometools vcftools --no-install-recommends \
+    && apt-get update && apt-get install -y $buildDeps bzip2 genometools vcftools perl-base --no-install-recommends \
     && rm -rf /var/lib/apt/lists/* \
     && wget "$HTSLIB_DOWNLOAD_URL" \
     && mkdir -p /usr/src/htslib \
@@ -39,6 +39,7 @@ ADD cyverse-cli.tgz /usr/local
 RUN /usr/local/cyverse-cli/bin/tenants-init -b -t iplantc.org
 
 COPY bin/process_genomic_data_format_files.sh /usr/local/bin
+COPY bin/normalize_athaliana_chrom_ids.pl /usr/local/bin
 
 RUN mkdir /data
 

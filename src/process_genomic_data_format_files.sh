@@ -9,6 +9,12 @@ TRACK_URL_BASE="{{TRACK_URL_BASE}}"
 ANONYMOUS_USER="{{ANONYMOUS_USER}}"
 ARAPORT_USER="{{ARAPORT_USER}}"
 
+# set some defaults
+BINDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+JB_STORE_CLASS="JBrowse/Store/SeqFeature/"
+EXEC_NORMALIZE_CHROM_ID="${BINDIR}/normalize_athaliana_chrom_ids.pl"
+
+# read positional params
 FULL_GDF=$1
 DESCRIPTION=$2
 
@@ -31,16 +37,16 @@ if [[ $FILE_TYPE = "gff" ]]; then
     #gt gff3 -sortlines yes -tidy yes -retainids yes -addids no -checkids yes $FULL_GFF >$SORTED_GFF
 
     # sort the GFF (using sort)
-    (grep ^"#" "$FULL_GDF"; grep -v ^"#" "$FULL_GDF" | sort -k1,1 -k4,4n) >"$SORTED_GDF"
-    STORECLASS="JBrowse/Store/SeqFeature/GFF3Tabix"
+    (grep ^"#" "$FULL_GDF"; grep -v ^"#" "$FULL_GDF" | ${EXEC_NORMALIZE_CHROM_ID} | sort -k1,1 -k4,4n) >"$SORTED_GDF"
+    JB_STORE_CLASS+="GFF3Tabix"
 elif [[ $FILE_TYPE = "bed" ]]; then
     # sort the BED (using sort)
-    sed -e "s/^[Cc][Hh][Rr]/Chr/g" "$FULL_GDF" | sort -k1,1 -k2,2n >"$SORTED_GDF"
-    STORECLASS="JBrowse/Store/SeqFeature/BEDTabix"
+    ${EXEC_NORMALIZE_CHROM_ID} "$FULL_GDF" | sort -k1,1 -k2,2n >"$SORTED_GDF"
+    JB_STORE_CLASS+="BEDTabix"
 elif [[ $FILE_TYPE = "vcf" ]]; then
     # sort the VCF (using vcftools)
-    vcf-sort "$FULL_GDF" | sed -r "s/^([1-5CM])/Chr\1/g" >"$SORTED_GDF"
-    STORECLASS="JBrowse/Store/SeqFeature/VCFTabix"
+    ${EXEC_NORMALIZE_CHROM_ID} "$FULL_GDF" | vcf-sort >"$SORTED_GDF"
+    JB_STORE_CLASS+="VCFTabix"
 else
     echo "File type not recognized (supports gff, bed, or vcf)."
     exit 1
@@ -57,7 +63,7 @@ tabix -p "$FILE_TYPE" "$GZIP_GDF"
 # construct (and upload) a JBrowse config file referencing the GFF3 file
 cat <<EOT >> "$JBROWSE_CONF"
 [tracks.$NAME_GDF]
-storeClass  = $STORECLASS
+storeClass  = $JB_STORE_CLASS
 type        = JBrowse/View/Track/CanvasFeatures
 category    = Community Data Tracks
 key         = $DESCRIPTION
