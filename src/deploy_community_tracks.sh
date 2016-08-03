@@ -3,8 +3,8 @@
 set -euo pipefail
 #set -x
 
-IMAGENAME="${AGAVE_IMAGENAME}"
-VERSION="${AGAVE_TOOL_VERSION}"
+IMAGENAME="${AGAVE_IMAGENAME:-@@IMAGENAME@@}"
+VERSION="${AGAVE_TOOL_VERSION:-@@tool_version@@}"
 
 # Usage info
 show_help() {

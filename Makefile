@@ -36,14 +36,14 @@ templatize:
 	if [ ! -d "$(BIN)" ]; then \
 		mkdir $(BIN) ;\
 	fi
-	sed -e 's|{{SYSTEM_ID}}|$(SYSTEM_ID)|g' \
-		-e 's|{{SHARED_DIR}}|$(SHARED_DIR)|g' \
-		-e 's|{{TRACK_URL_BASE}}|$(TRACK_URL_BASE)|g' \
-		-e 's|{{ANONYMOUS_USER}}|$(ANONYMOUS_USER)|g' \
-		-e 's|{{ARAPORT_USER}}|$(ARAPORT_USER)|g' \
+	sed -e 's|@@SYSTEM_ID@@|$(SYSTEM_ID)|g' \
+		-e 's|@@SHARED_DIR@@|$(SHARED_DIR)|g' \
+		-e 's|@@TRACK_URL_BASE@@|$(TRACK_URL_BASE)|g' \
+		-e 's|@@ANONYMOUS_USER@@|$(ANONYMOUS_USER)|g' \
+		-e 's|@@ARAPORT_USER@@|$(ARAPORT_USER)|g' \
 		$(SRC)/process_genomic_data_format_files.sh > $(BIN)/process_genomic_data_format_files.sh
-	sed -e 's|{{tool_version}}|$(tool_version)|g' \
-		-e 's|{{IMAGENAME}}|$(TOOL)|g' \
+	sed -e 's|@@tool_version@@|$(tool_version)|g' \
+		-e 's|@@IMAGENAME@@|$(TOOL)|g' \
 		$(SRC)/deploy_community_tracks.sh > $(BIN)/deploy_community_tracks.sh
 	cp $(SRC)/normalize_athaliana_chrom_ids.pl $(BIN)/.
 	find $(BIN) -type f \( -name '*.sh' -o -name '*.pl' \) -exec chmod a+rx {} \;
