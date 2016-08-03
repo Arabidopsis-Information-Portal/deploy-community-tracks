@@ -3,7 +3,8 @@
 set -euo pipefail
 #set -x
 
-IMAGENAME="{{IMAGENAME}}"
+IMAGENAME="${AGAVE_IMAGENAME:-@@IMAGENAME@@}"
+VERSION="${AGAVE_TOOL_VERSION:-@@tool_version@@}"
 
 # Usage info
 show_help() {
@@ -36,7 +37,7 @@ while getopts "hvd:" OPT; do
             exit 0
             ;;
         v)
-            echo "$(basename "$0") version {{tool_version}}"
+            echo "$(basename "$0") version $VERSION"
             exit 0
             ;;
         d)
