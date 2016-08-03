@@ -1,0 +1,146 @@
+{
+   "name": "araport-deploy-community-tracks",
+   "parallelism": "SERIAL",
+   "version": "0.0.1",
+   "helpURI": "https://github.com/Arabidopsis-Information-Portal/deploy-community-tracks/blob/master/README.md",
+   "label": "Publish Community Tracks to Araport Jbrowse",
+   "shortDescription": "",
+   "longDescription": "",
+   "defaultMemory": 1,
+   "defaultProcessors": 1,
+   "defaultQueue": "normal",
+   "deploymentPath": "vaughn/applications/deploy-community-tracks",
+   "deploymentSystem": "data.iplantcollaborative.org",
+   "executionSystem": "docker.iplantcollaborative.org",
+   "executionType": "CLI",
+   "templatePath": "template.bashx",
+   "testPath": "test/tests.sh",
+   "checkpointable": false,
+   "modules": [],
+   "tags": [
+      "araport",
+      "jbrowse"
+   ],
+   "ontology": ["http://sswapmeet.sswap.info/agave/apps/Application"],
+   "inputs": [{
+      "id": "GDF_FILE",
+      "value": {
+         "default": "agave://araport-storage-00/public_files/fwa.nt.fa",
+         "type": "string",
+         "validator": "",
+         "visible": true,
+         "required": true
+      },
+      "details": {
+         "label": "Track file to be shared",
+         "description": "Valid GFF, BED, or VCF file"
+      },
+      "semantics": {
+         "ontology": [
+            "http://sswapmeet.sswap.info/mime/text/Plain"
+         ],
+         "fileTypes": [
+            "raw-0"
+         ]
+      }
+   }],
+   "parameters": [{
+         "details": {
+            "argument": null,
+            "description": "Short (128 character) description of this data track",
+            "label": "Description",
+            "repeatArgument": false,
+            "showArgument": false
+         },
+         "id": "DESCRIPTION",
+         "semantics": {
+            "ontology": [
+               "xs:string"
+            ]
+         },
+         "value": {
+            "default": "",
+            "enquote": false,
+            "order": 1,
+            "required": true,
+            "type": "string",
+            "validator": "",
+            "visible": true
+         }
+      },
+      {
+         "details": {
+            "argument": null,
+            "description": "Arabidopsis Col-0 genome version",
+            "label": "The genome coordinate version used to create the data track",
+            "repeatArgument": false,
+            "showArgument": false
+         },
+         "id": "GENOME_VERSION",
+         "semantics": {
+            "ontology": [
+               "xs:string"
+            ]
+         },
+         "value": {
+            "default": "araport11",
+            "enquote": false,
+            "order": 1,
+            "required": false,
+            "type": "string",
+            "validator": "",
+            "visible": false
+         }
+      }
+
+   ],
+   "outputs": [{
+      "id": "gzip_gdf",
+      "value": {
+         "default": "file.gz",
+         "validator": ""
+      },
+      "details": {
+         "label": "Sorted & gzipped track file",
+         "description": ""
+      },
+      "semantics": {
+         "ontology": ["http://sswapmeet.sswap.info/mime/application/Zip"],
+         "minCardinality": 1,
+         "maxCardinality": 1,
+         "fileType": "raw-0"
+      }
+   }, {
+      "id": "tabix_gdf",
+      "value": {
+         "default": "file.tbi",
+         "validator": ""
+      },
+      "details": {
+         "label": "Tabix index for track file",
+         "description": ""
+      },
+      "semantics": {
+         "ontology": ["http://sswapmeet.sswap.info/mime/application/X-tabix"],
+         "minCardinality": 1,
+         "maxCardinality": 1,
+         "fileType": "raw-0"
+      }
+   }, {
+      "id": "jbrowse_conf",
+      "value": {
+         "default": "jbrowse.conf",
+         "validator": ""
+      },
+      "details": {
+         "label": "Jbrowse track configuration file",
+         "description": ""
+      },
+      "semantics": {
+         "ontology": ["http://sswapmeet.sswap.info/mime/text/Plain"],
+         "minCardinality": 1,
+         "maxCardinality": 1,
+         "fileType": "Text-0"
+      }
+   }]
+}
