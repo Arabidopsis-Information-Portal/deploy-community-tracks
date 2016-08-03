@@ -49,3 +49,4 @@ docker info > /dev/null || die "Docker is not installed. Exiting."
 
 #docker run -v "${HOME}/.agave:/root/.agave" -v "${gdf_path}:/data" "${IMAGENAME}:latest" "$gdf_file" "$description"
 ${DOCKER_APP_RUN} "${GDF_FILE}" "${DESCRIPTION}"
+rm env.list
