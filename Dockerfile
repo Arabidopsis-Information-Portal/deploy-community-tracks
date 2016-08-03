@@ -38,8 +38,9 @@ ADD agave-cli.tgz /usr/local
 
 RUN /usr/local/agave-cli/bin/tenants-init -b -t iplantc.org
 
-COPY bin/process_genomic_data_format_files.sh /usr/local/bin
-COPY bin/normalize_athaliana_chrom_ids.pl /usr/local/bin
+COPY src/process_genomic_data_format_files.sh /usr/local/bin
+COPY src/normalize_athaliana_chrom_ids.pl /usr/local/bin
+RUN chmod a+x /usr/local/bin/*
 
 RUN mkdir /data
 

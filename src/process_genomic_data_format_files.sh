@@ -3,11 +3,14 @@
 set -euo pipefail
 #set -x
 
+AGAVE_BEARER_TOKEN="${AGAVE_BEARER_TOKEN:-@@AGAVE_BEARER_TOKEN@@}"
+AGAVE_JOB_OWNER="${AGAVE_JOB_OWNER:-@@AGAVE_JOB_OWNER@@}"
+AGAVE_JOB_ID="${AGAVE_JOB_ID:-@@AGAVE_JOB_ID@@}"
+
 SYSTEM_ID="${AGAVE_SYSTEM_ID:-@@SYSTEM_ID@@}"
 SHARED_DIR="${AGAVE_SHARED_DIR:-@@SHARED_DIR@@}"
 TRACK_URL_BASE="${AGAVE_TRACK_URL_BASE:-@@TRACK_URL_BASE@@}"
 ANONYMOUS_USER="${AGAVE_ANONYMOUS_USER:-@@ANONYMOUS_USER@@}"
-ARAPORT_USER="${AGAVE_ARAPORT_USER:-@@ARAPORT_USER@@}"
 
 # set some defaults
 BINDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -24,10 +27,12 @@ EXT_GDF=${BASE_GDF##*.}
 #FILE_TYPE=${EXT_GDF,,} # bash 4.x only!
 FILE_TYPE=$(echo "$EXT_GDF" | tr '[:upper:]' '[:lower:]')
 NAME_GDF=${BASE_GDF%.*}
-SORTED_GDF=$NAME_GDF.sorted.$EXT_GDF
+#SORTED_GDF=$NAME_GDF.sorted.$EXT_GDF
+NAMESPACE=${AGAVE_JOB_OWNER}-${AGAVE_JOB_ID}
+SORTED_GDF=${NAME_GDF}-${NAMESPACE}.sorted.$EXT_GDF
 GZIP_GDF=$SORTED_GDF.gz
 TABIX_GDF=$GZIP_GDF.tbi
-JBROWSE_CONF=$NAME_GDF.conf
+JBROWSE_CONF=${NAME_GDF}-${NAMESPACE}.conf
 
 if [[ $FILE_TYPE = "gff" ]]; then
     # validate the GFF file (using genometools)
@@ -57,8 +62,8 @@ bgzip "$SORTED_GDF"
 tabix -p "$FILE_TYPE" "$GZIP_GDF"
 
 # upload the files to iplant
-/usr/local/agave-cli/bin/files-upload -f -S "$SYSTEM_ID" -F "$GZIP_GDF" "$SHARED_DIR"
-/usr/local/agave-cli/bin/files-upload -f -S "$SYSTEM_ID" -F "$TABIX_GDF" "$SHARED_DIR"
+#/usr/local/agave-cli/bin/files-upload -f -S "$SYSTEM_ID" -F "$GZIP_GDF" "$SHARED_DIR"
+#/usr/local/agave-cli/bin/files-upload -f -S "$SYSTEM_ID" -F "$TABIX_GDF" "$SHARED_DIR"
 
 # construct (and upload) a JBrowse config file referencing the GFF3 file
 cat <<EOT >> "$JBROWSE_CONF"
@@ -70,9 +75,9 @@ key         = $DESCRIPTION
 urlTemplate = $TRACK_URL_BASE/$SHARED_DIR/${SORTED_GDF}.gz
 EOT
 
-/usr/local/agave-cli/bin/files-upload -f -S "$SYSTEM_ID" -F "$JBROWSE_CONF" "$SHARED_DIR"
+#/usr/local/agave-cli/bin/files-upload -f -S "$SYSTEM_ID" -F "$JBROWSE_CONF" "$SHARED_DIR"
 
 # make share directory readable by anonymous
-/usr/local/agave-cli/bin/files-pems-update -f -R -S "$SYSTEM_ID" -U "$ANONYMOUS_USER" -P READ "$SHARED_DIR"
+#/usr/local/agave-cli/bin/files-pems-update -f -R -S "$SYSTEM_ID" -U "$ANONYMOUS_USER" -P READ "$SHARED_DIR"
 # make share directory readable and writable by araport
-/usr/local/agave-cli/bin/files-pems-update -f -R -S "$SYSTEM_ID" -U "$ARAPORT_USER" -P READ_WRITE "$SHARED_DIR"
+#/usr/local/agave-cli/bin/files-pems-update -f -R -S "$SYSTEM_ID" -U "$ARAPORT_USER" -P READ_WRITE "$SHARED_DIR"

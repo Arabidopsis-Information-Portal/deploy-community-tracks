@@ -22,8 +22,17 @@ ENVIRONMENT="--env-file ./env.list"
 HOST_OPTS="--net=none -m=2g -u=$MYUID"
 
 # Docker build
-docker build -t ${DOCKER_APP_IMAGE} .
+
+DOCKER_IMAGE=$(docker images -q ${DOCKER_APP_IMAGE}:latest)
+
+if [ -z "${DOCKER_IMAGE}" ] || [ "${DOCKER_FORCE_REBUILD}" == 1 ];
+then
+	docker build -t ${DOCKER_APP_IMAGE} .
+fi
 
 # App container macro
-DOCKER_APP_RUN="docker run ${HOST_OPTS} -d -v `pwd`:${HOST_SCRATCH}:rw -w ${HOST_SCRATCH} ${ENVIRONMENT} --name ${DOCKER_APP_CONTAINER} ${DOCKER_APP_IMAGE} "
+export DOCKER_APP_RUN="docker run ${HOST_OPTS} -v `pwd`:${HOST_SCRATCH}:rw -w ${HOST_SCRATCH} ${ENVIRONMENT} \
+	--name ${DOCKER_APP_CONTAINER} ${DOCKER_APP_IMAGE} "
+echo "$DOCKER_APP_RUN"
+
 ## <- NO USER-SERVICABLE PARTS INSIDE

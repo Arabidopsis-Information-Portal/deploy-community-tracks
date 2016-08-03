@@ -4,19 +4,13 @@ set -euo pipefail
 #set -x
 
 # Init for Docker-based CLI application
-
+#
+# Always force build image (1)
+DOCKER_FORCE_REBUILD=${DOCKER_FORCE_REBUILD}
+# You may append a specific version to the tag
 DOCKER_APP_IMAGE='araport/deploy-community-tracks'
-# You may append a specific versioned tag to the data image, but be warned that will
-# restrict the set of queriable public datasets to JUST that release unless
-# the tag is 'latest'
 # Only change if you need to and know what you're doing
 HOST_SCRATCH='/data'
-# In theory, these values can be set in the Agave application's metadata
-# then set to invisible so they can't be re-set by end user
-# How many concurrent threads to run BLAST*
-#
-# Discover this from the host and run at max
-_THREADS=$(cat /proc/cpuinfo | grep processor | wc -l)
 
 # YOU MUST INCLUDE THIS LINE AFTER DEFINING
 # THE PREVIOUS VARIABLES ^^
@@ -24,16 +18,22 @@ source ./docker-common.sh
 
 # Inputs and parameters
 
-# housekeeping stuff
-SYSTEM_ID="${AGAVE_SYSTEM_ID}"
-SHARED_DIR="${AGAVE_SHARED_DIR}"
-TRACK_URL_BASE="${AGAVE_TRACK_URL_BASE}"
-ANONYMOUS_USER="${AGAVE_ANONYMOUS_USER}"
-ARAPORT_USER="${AGAVE_ARAPORT_USER}"
+# Make Docker environment file - values will subbed in by agave at run-time
+# eventually, pass these in from the app
+cat <<EOT >> env.list
+AGAVE_BEARER_TOKEN=${AGAVE_BEARER_TOKEN}
+AGAVE_JOB_ID=${AGAVE_JOB_ID}
+AGAVE_JOB_OWNER=${AGAVE_JOB_OWNER}
+AGAVE_SYSTEM_ID=data.iplantcollaborative.org
+AGAVE_SHARED_DIR=araport/community-tracks/shared
+AGAVE_TRACK_URL_BASE=https://de.iplantcollaborative.org/anon-files/iplant/home
+AGAVE_ANONYMOUS_USER=anonymous
+EOT
 
-# actual track publising parameters
+# actual track publishing parameters
 GDF_FILE="${GDF_FILE}"
 DESCRIPTION="${DESCRIPTION}"
+GENOME_VERSION="${GENOME_VERSION}"
 
 die() {
 	echo "$1" 1>&2
@@ -44,30 +44,8 @@ realpath() {
     echo "$(cd "$(dirname "$1")"; pwd)"
 }
 
-
-# check for GDF file
-if [[ $# -ne 1 ]]; then
-    echo "Please specify a GFF, BED, or VCF file."
-    exit 1
-fi
-
-# check for description
-if [[ -z "${description// }" ]]; then
-    echo "Please specify a track description (-d)."
-    exit 1
-fi
-
 # check for docker install
 docker info > /dev/null || die "Docker is not installed. Exiting."
 
-# docker environment file - values will subbed in by agave at run-time
-cat <<EOT >> env.list
-SYSTEM_ID="${AGAVE_SYSTEM_ID}"
-SHARED_DIR="${AGAVE_SHARED_DIR}"
-TRACK_URL_BASE="${AGAVE_TRACK_URL_BASE}"
-ANONYMOUS_USER="${AGAVE_ANONYMOUS_USER}"
-ARAPORT_USER="${AGAVE_ARAPORT_USER}"
-EOT
-
 #docker run -v "${HOME}/.agave:/root/.agave" -v "${gdf_path}:/data" "${IMAGENAME}:latest" "$gdf_file" "$description"
-${DOCKER_APP_RUN} "$GDF_FILE" "$DESCRIPTION"
+${DOCKER_APP_RUN} "${GDF_FILE}" "${DESCRIPTION}"
