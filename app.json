@@ -1,5 +1,5 @@
 {
-   "name": "araport-deploy-community-tracks",
+   "name": "vaughn-araport-deploy-community-tracks",
    "parallelism": "SERIAL",
    "version": "0.0.1",
    "helpURI": "https://github.com/Arabidopsis-Information-Portal/deploy-community-tracks/blob/master/README.md",

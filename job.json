@@ -1,6 +1,6 @@
 {
   "name":"example",
-  "appId": "araport-deploy-community-tracks-0.0.1",
+  "appId": "vaughn-araport-deploy-community-tracks-0.0.1",
   "batchQueue": "debug",
   "executionSystem": "docker.iplantcollaborative.org",
   "maxRunTime": "00:10:00",
