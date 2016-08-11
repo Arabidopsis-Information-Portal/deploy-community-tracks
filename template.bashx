@@ -14,7 +14,8 @@ HOST_SCRATCH='/data'
 
 # YOU MUST INCLUDE THIS LINE AFTER DEFINING
 # THE PREVIOUS VARIABLES ^^
-source ./docker-common.sh
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source ${SCRIPT_DIR}/docker-common.sh
 
 # Inputs and parameters
 
@@ -41,7 +42,7 @@ die() {
 }
 
 realpath() {
-    echo "$(cd "$(dirname "$1")"; pwd)"
+    echo "$(cd "$(dirname "$1")" || exit 1; pwd)"
 }
 
 # check for docker install

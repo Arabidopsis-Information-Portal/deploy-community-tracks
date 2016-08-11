@@ -76,6 +76,11 @@ docker-release: docker
 docker-clean:
 	build/docker.sh $(TOOL) $(tool_version) clean
 
+.SILENT: test
+.PHONY: test
+test:
+	$(MAKE) -C test/sharness
+
 .SILENT: release
 release:
 	git diff-index --quiet HEAD

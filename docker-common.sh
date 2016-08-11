@@ -12,9 +12,7 @@ then
     exit 1
 fi
 
-TTY=""
-# TTY="-t"
-MYUID=$(id -u $USER)
+MYUID=$(id -u "$USER")
 STAMP=$(date +%s)
 DOCKER_APP_CONTAINER="app-$STAMP"
 ENVIRONMENT="--env-file ./env.list"
@@ -23,15 +21,17 @@ HOST_OPTS="--net=none -m=2g -u=$MYUID"
 
 # Docker build
 
-DOCKER_IMAGE=$(docker images -q ${DOCKER_APP_IMAGE}:latest)
+DOCKER_IMAGE=$(docker images -q "${DOCKER_APP_IMAGE}:latest")
+BUILD_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 if [ -z "${DOCKER_IMAGE}" ] || [ "${DOCKER_FORCE_REBUILD}" == 1 ];
 then
-	docker build -t ${DOCKER_APP_IMAGE} .
+	docker build -t "${DOCKER_APP_IMAGE}" "${BUILD_DIR}"
 fi
 
 # App container macro
-export DOCKER_APP_RUN="docker run ${HOST_OPTS} -v `pwd`:${HOST_SCRATCH}:rw -w ${HOST_SCRATCH} ${ENVIRONMENT} \
+export DOCKER_APP_RUN
+DOCKER_APP_RUN="docker run ${HOST_OPTS} -v $(pwd):${HOST_SCRATCH}:rw -w ${HOST_SCRATCH} ${ENVIRONMENT} \
 	--name ${DOCKER_APP_CONTAINER} ${DOCKER_APP_IMAGE} "
 echo "$DOCKER_APP_RUN"
 
