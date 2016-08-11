@@ -1,4 +1,3 @@
 lib/sharness/
 test-results/
-trash directory.*.sh/
-temp_directory.*.sh/
+temp_directory.*/
