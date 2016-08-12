@@ -4,12 +4,15 @@ test_description="Test app local GFF processing"
 
 . ./lib/sharness/sharness.sh
 
+# grab variables from config file
+. ../config.sh
+
 # generate dummy ID in lieu of an Agave job ID
 UUID4=$(curl -skq "https://www.uuidgenerator.net/api/version4")
 
 export AGAVE_JOB_ID=${UUID4}
-export AGAVE_JOB_OWNER=eriksf
-export AGAVE_BEARER_TOKEN=19aaedef4af51ca537e9a795364d86c
+export AGAVE_JOB_OWNER=${USERNAME}
+export AGAVE_BEARER_TOKEN=${BEARER_TOKEN}
 
 export DOCKER_FORCE_REBUILD=1
 

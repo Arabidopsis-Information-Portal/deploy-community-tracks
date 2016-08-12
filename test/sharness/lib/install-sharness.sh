@@ -20,7 +20,7 @@
 #
 
 # settings
-version=02c9351edc461af7c136b195a628fe5d590e23d9
+version=6ee2a378163a0cbcc0ace3281a042c9416a293fb
 urlprefix=https://github.com/eriksf/sharness.git
 clonedir=lib
 sharnessdir=sharness

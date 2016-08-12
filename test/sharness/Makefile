@@ -9,6 +9,12 @@ T = $(sort $(wildcard t[0-9][0-9][0-9][0-9]-*.sh))
 LIBDIR = lib
 SHARNESSDIR = sharness
 AGGREGATE = $(LIBDIR)/$(SHARNESSDIR)/aggregate-results.sh
+DEBUG ?= 0
+ifeq ($(DEBUG), 1)
+	DEBUG_FLAG=--debug
+else
+	DEBUG_FLAG=
+endif
 
 
 # Add below the binaries that this project generates or needs.
@@ -30,7 +36,7 @@ clean-test-results:
 
 $(T): clean-test-results deps
 	@echo "*** $@ ***"
-	@./$@
+	@./$@ $(DEBUG_FLAG)
 
 aggregate: $(T)
 	@echo "*** $@ ***"
@@ -64,4 +70,3 @@ sharness:
 #	@which curl >/dev/null || (echo "Please install curl!" && false)
 
 .PHONY: all clean clean-test-results $(T) aggregate deps sharness FORCE
-
