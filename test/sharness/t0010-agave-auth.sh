@@ -5,7 +5,7 @@ test_description="Agave CLI and Oauth Tests"
 . ./lib/sharness/sharness.sh
 
 # grab variables from config file
-. ../config.sh
+. ../../../conf/config.sh
 
 echo ""
 echo "Please make sure the Agave CLI is installed and is"
@@ -22,7 +22,7 @@ test_expect_success "agave cli is installed" '
 # sharness sets $HOME to the temp directory so link from $USER_HOME
 ln -s "$USER_HOME/.agave" "$HOME"
 
-test_expect_success "agave cli command auth-check works" '
+test_expect_success "agave cli command 'auth-check' works" '
     auth-check >auth_output
 '
 
@@ -34,7 +34,7 @@ test_expect_success "iplantc.org access token is current" '
     [[ $(cat auth_output | awk "/^time left:/ { print \$3 }") -gt 0 ]]
 '
 
-test_expect_success "agave cli command apps-list works" '
+test_expect_success "agave cli command 'apps-list' works" '
     apps-list >apps_output
 '
 

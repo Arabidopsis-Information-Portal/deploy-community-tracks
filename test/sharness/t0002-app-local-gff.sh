@@ -5,7 +5,7 @@ test_description="Test app local GFF processing"
 . ./lib/sharness/sharness.sh
 
 # grab variables from config file
-. ../config.sh
+. ../../../conf/config.sh
 
 # generate dummy ID in lieu of an Agave job ID
 UUID4=$(curl -skq "https://www.uuidgenerator.net/api/version4")
@@ -28,15 +28,15 @@ test_expect_success "successfully process GFF file" '
 '
 
 test_expect_success "successfully generate sorted bgzip file" '
-    test -s $OUTPUT_FILE_BASE.sorted.gff.gz
+    test_must_exist "$OUTPUT_FILE_BASE.sorted.gff.gz"
 '
 
 test_expect_success "successfully generate tabix file" '
-    test -s $OUTPUT_FILE_BASE.sorted.gff.gz.tbi
+    test_must_exist "$OUTPUT_FILE_BASE.sorted.gff.gz.tbi"
 '
 
 test_expect_success "successfully generate jbrowse config file" '
-    test -s $OUTPUT_FILE_BASE.conf
+    test_must_exist "$OUTPUT_FILE_BASE.conf"
 '
 
 test_done

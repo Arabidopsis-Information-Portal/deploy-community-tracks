@@ -18,6 +18,17 @@ OBJ = agave-cli
 SRC = src
 BIN = bin
 SOURCES = templatize
+FILES_UPLOAD := $(shell command -v files-upload 2>/dev/null)
+
+define AGAVE_CLI_ERROR_MSG
+Can't find Agave CLI commands. Exiting.
+
+Please make sure the Agave CLI is installed and is
+available in your PATH. Also, make sure to have a current
+access token from the iplantc.org tenant.
+endef
+
+include conf/config.sh
 
 all: $(SOURCES)
 
@@ -47,6 +58,10 @@ templatize:
 		$(SRC)/deploy_community_tracks.sh > $(BIN)/deploy_community_tracks.sh
 	cp $(SRC)/normalize_athaliana_chrom_ids.pl $(BIN)/.
 	find $(BIN) -type f \( -name '*.sh' -o -name '*.pl' \) -exec chmod a+rx {} \;
+	sed -e 's|@@APP_NAME@@|$(APP_NAME)|g' \
+		-e 's|@@VERSION@@|$(tool_version)|g' \
+		-e 's|@@DEPLOYMENT_PATH@@|$(DEPLOYMENT_PATH)|g' \
+		app.jsonx > $(BIN)/app.json
 
 .PHONY: clean
 clean:
@@ -87,3 +102,12 @@ release:
 	if [ $$? -ne 0 ]; then echo "You have unstaged changes. Please commit or discard then re-run make clean && make release."; exit 0; fi
 	git tag -a "v$(tool_version)" -m "$(TOOL) $(tool_version). Requires Agave API $(agave_api_version)/$(agave_api_release)."
 	git push origin "v$(tool_version)"
+
+.SILENT: install
+install: all
+ifndef FILES_UPLOAD
+	$(error $(AGAVE_CLI_ERROR_MSG))
+endif
+	echo "Installing agave app to $(USERNAME)/applications..."
+	files-upload -S $(SYSTEM_ID) -F ../deploy-community-tracks $(USERNAME)/applications
+	apps-addupdate -F $(BIN)/app.json

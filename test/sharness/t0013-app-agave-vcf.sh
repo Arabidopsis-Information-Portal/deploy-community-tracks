@@ -5,7 +5,7 @@ test_description="Test Agave app VCF processing"
 . ./lib/sharness/sharness.sh
 
 # grab variables from config file
-. ../config.sh
+. ../../../conf/config.sh
 
 # sharness sets $HOME to the temp directory so link from $USER_HOME
 ln -s "$USER_HOME/.agave" "$HOME"
@@ -25,7 +25,12 @@ test_expect_success "successfully generate vcf job file" '
 '
 
 test_expect_success "submit and run deploy vcf job" '
-    jobs-submit -F $VCF_JOB_FILE >job_output 2>&1
+    jobs-submit -W -F $VCF_JOB_FILE >job_output 2>&1
+'
+
+job_id=$(sed -n 's/Successfully submitted job \(.*\)/\1/p' job_output)
+test_expect_success "job successfully finished" '
+    [[ $(jobs-status $job_id) = "FINISHED" ]]
 '
 
 test_done
