@@ -1,6 +1,6 @@
 {
   "name":"example",
-  "appId": "vaughn-araport-deploy-community-tracks-0.0.1",
+  "appId": "vaughn-araport-deploy-community-tracks-0.0.2",
   "batchQueue": "debug",
   "executionSystem": "docker.iplantcollaborative.org",
   "maxRunTime": "00:10:00",
@@ -9,7 +9,7 @@
   "processorsPerNode": 1,
   "archive": true,
   "archiveSystem": "data.iplantcollaborative.org",
-  "archivePath": "araport/community-tracks/shared",
+  "archivePath": "araport/community-tracks/staging",
   "inputs": {
     "GDF_FILE": "agave://data.iplantcollaborative.org/araport/community-tracks/samples/pollen.bed"
   },
