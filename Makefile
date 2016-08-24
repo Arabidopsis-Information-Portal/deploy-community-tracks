@@ -16,6 +16,7 @@ CLI_GIT_REPO := 'https://bitbucket.org/agaveapi/cli'
 TOOL := 'araport/deploy-community-tracks'
 OBJ = agave-cli
 SRC = src
+TEST = test/sharness
 BIN = bin
 SOURCES = templatize
 FILES_UPLOAD := $(shell command -v files-upload 2>/dev/null)
@@ -65,7 +66,7 @@ templatize:
 
 .PHONY: clean
 clean:
-	rm -rf $(BIN) $(OBJ) cli
+	rm -rf $(BIN) $(OBJ) cli $(TEST)/test-results
 
 .SILENT: update
 update: cli
@@ -108,6 +109,6 @@ install: all
 ifndef FILES_UPLOAD
 	$(error $(AGAVE_CLI_ERROR_MSG))
 endif
-	echo "Installing agave app to $(USERNAME)/applications..."
-	files-upload -S $(SYSTEM_ID) -F ../deploy-community-tracks $(USERNAME)/applications
+	echo "Installing agave app to $(DEPLOYMENT_PATH)..."
+	files-upload -S $(SYSTEM_ID) -F ../$(APP_SRC) $(DEPLOYMENT_BASE)
 	apps-addupdate -F $(BIN)/app.json
