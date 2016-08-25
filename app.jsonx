@@ -2,8 +2,8 @@
    "name": "@@APP_NAME@@",
    "parallelism": "SERIAL",
    "version": "@@VERSION@@",
-   "helpURI": "https://github.com/Arabidopsis-Information-Portal/deploy-community-tracks/blob/master/README.md",
-   "label": "Publish Community Tracks to Araport Jbrowse",
+   "helpURI": "https://github.com/Arabidopsis-Information-Portal/deploy-community-tracks/blob/master/TUTORIAL.md",
+   "label": "Publish Community Tracks to Araport JBrowse",
    "shortDescription": "",
    "longDescription": "",
    "defaultMemory": 1,
@@ -68,32 +68,7 @@
             "validator": "",
             "visible": true
          }
-      },
-      {
-         "details": {
-            "argument": null,
-            "description": "Arabidopsis Col-0 genome version",
-            "label": "The genome coordinate version used to create the data track",
-            "repeatArgument": false,
-            "showArgument": false
-         },
-         "id": "GENOME_VERSION",
-         "semantics": {
-            "ontology": [
-               "xs:string"
-            ]
-         },
-         "value": {
-            "default": "araport11",
-            "enquote": false,
-            "order": 1,
-            "required": false,
-            "type": "string",
-            "validator": "",
-            "visible": false
-         }
       }
-
    ],
    "outputs": [{
       "id": "gzip_gdf",

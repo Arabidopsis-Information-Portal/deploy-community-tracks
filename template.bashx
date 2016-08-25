@@ -34,7 +34,6 @@ EOT
 # actual track publishing parameters
 GDF_FILE="${GDF_FILE}"
 DESCRIPTION="${DESCRIPTION}"
-GENOME_VERSION="${GENOME_VERSION}"
 
 die() {
 	echo "$1" 1>&2

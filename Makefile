@@ -33,6 +33,9 @@ include conf/config.sh
 
 all: $(SOURCES)
 
+print-%:
+	@echo $*=$($*)
+
 .SILENT: cli
 cli: git-test
 	echo "Fetching agaveapi/cli source..."
