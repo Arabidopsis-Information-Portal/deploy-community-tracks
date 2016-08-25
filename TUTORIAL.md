@@ -26,37 +26,37 @@ The following tutorial explains the steps to upload Genomic Data Format (GFF3, B
 
 2. **Upload Genomic Data Format file (GFF3, BED, VCF):** In the DE, click on the _Data_ button in the upper left corner to open up the Data window. From there select the _Upload_ menu and then _Simple Upload from Desktop_.
 
-![File upload 1](images/de_upload_file.png?raw=true)
+    ![File upload 1](images/de_upload_file.png?raw=true)
 
 3. In the Upload dialog box, click the _Browse_ button to locate the file on your system and then click the _Upload_ button.
 
-![File upload 2](images/de_file_upload_2.png?raw=true)
+    ![File upload 2](images/de_file_upload_2.png?raw=true)
 
 4. Verify that the file has been uploaded successfully by checking the Data window (Hit the _Refresh_ button if needed).
 
-![File uploaded](images/de_file_uploaded.png?raw=true)
+    ![File uploaded](images/de_file_uploaded.png?raw=true)
 
 5. **Run the Publish App:** Click the _Apps_ button in the upper left corner to open up the Apps window. Find the app called _"Publish Community Tracks to Araport JBrowse 1.0.0"_. The easiest way is to type "araport" into the _Search Apps_ box.
 
-![Search Apps](images/de_search_apps.png?raw=true)
+    ![Search Apps](images/de_search_apps.png?raw=true)
 
 6. Click on the app to use it.
 
-![Launch App](images/de_open_app.png?raw=true)
+    ![Launch App](images/de_open_app.png?raw=true)
 
 7. Change the output folder by clicking on the _Browse_ button or leave it at the defaults (analyses folder) and then click on the _Inputs_ tab.
 
-![Select input](images/de_select_input_file.png?raw=true)
+    ![Select input](images/de_select_input_file.png?raw=true)
 
 8. Click the _Browse_ button to locate the file that was uploaded earlier and then click on the _Parameters_ tab.
 
-![Enter description](images/de_enter_description.png?raw=true)
+    ![Enter description](images/de_enter_description.png?raw=true)
 
 9. Enter a short description for the track that will appear in the JBrowse track selector and then click the _Launch Analysis_ button.
 
 10. (Optional) Click the _Analyses_ button in the upper left corner to open up the Analyses window. From here the job status can be monitored.
 
-![Monitor job](images/de_monitor_job.png?raw=true)
+    ![Monitor job](images/de_monitor_job.png?raw=true)
 
 When the job completes, the output files will have been uploaded to Araport. At this point, the Araport administrators will review the track and ultimately point to it from the Araport JBrowse instance.
 
