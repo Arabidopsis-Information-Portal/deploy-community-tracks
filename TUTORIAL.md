@@ -44,7 +44,7 @@ The following tutorial explains the steps to upload Genomic Data Format (GFF3, B
 
     ![Launch App](images/de_open_app.png?raw=true)
 
-7. Change the output folder by clicking on the _Browse_ button or leave it at the defaults (analyses folder) and then click on the _Inputs_ tab.
+7. Change the output folder by clicking on the _Browse_ button and navigate to **Community Data -> araport -> community-tracks -> staging** (/iplant/home/shared/araport/community-tracks/staging) and then click on the _Inputs_ tab.
 
     ![Select input](images/de_select_input_file.png?raw=true)
 
