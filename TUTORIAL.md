@@ -58,6 +58,6 @@ The following tutorial explains the steps to upload Genomic Data Format (GFF3, B
 
     ![Monitor job](images/de_monitor_job.png?raw=true)
 
-When the job completes, the output files will have been uploaded to Araport. At this point, the Araport administrators will review the track and ultimately point to it from the Araport JBrowse instance.
+When the job completes, the output files will have been uploaded to the Araport community data directory. At this point, the Araport administrators will review the track, move it to the **Community Data -> araport -> community-tracks -> shared** directory, and ultimately point to it from the Araport JBrowse instance.
 
 For any questions or comments, please email <araport@jcvi.org>.
