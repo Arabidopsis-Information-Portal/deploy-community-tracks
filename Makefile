@@ -3,7 +3,7 @@
 
 tool_version := $(shell cat VERSION)
 agave_api_version := v2
-agave_api_release := 2.1.5
+agave_api_release := 2.1.9.0
 
 SYSTEM_ID := 'data.iplantcollaborative.org'
 SHARED_DIR := 'eriksf/share'
