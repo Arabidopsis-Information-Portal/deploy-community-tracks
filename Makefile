@@ -7,7 +7,7 @@ agave_api_release := 2.1.9.0
 
 SYSTEM_ID := 'data.iplantcollaborative.org'
 SHARED_DIR := 'eriksf/share'
-TRACK_URL_BASE := 'https://de.iplantcollaborative.org/anon-files/iplant/home'
+TRACK_URL_BASE := 'https://de.cyverse.org/anon-files/iplant/home'
 ANONYMOUS_USER := 'anonymous'
 ARAPORT_USER := 'araport'
 

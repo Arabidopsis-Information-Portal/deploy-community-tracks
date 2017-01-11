@@ -27,7 +27,7 @@ AGAVE_JOB_ID=${AGAVE_JOB_ID}
 AGAVE_JOB_OWNER=${AGAVE_JOB_OWNER}
 AGAVE_SYSTEM_ID=data.iplantcollaborative.org
 AGAVE_SHARED_DIR=araport/community-tracks/staging
-AGAVE_TRACK_URL_BASE=https://de.iplantcollaborative.org/anon-files/iplant/home
+AGAVE_TRACK_URL_BASE=https://de.cyverse.org/anon-files/iplant/home
 AGAVE_ANONYMOUS_USER=anonymous
 EOT
 

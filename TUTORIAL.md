@@ -22,7 +22,7 @@ The following tutorial explains the steps to upload Genomic Data Format (GFF3, B
 
 ### Step-by-step guide
 
-1. Login to the CyVerse Discovery Environment at <https://de.iplantcollaborative.org/de/> with your CyVerse ID.
+1. Login to the CyVerse Discovery Environment at <https://de.cyverse.org/de/> with your CyVerse ID.
 
 2. **Upload Genomic Data Format file (GFF3, BED, VCF):** In the DE, click on the _Data_ button in the upper left corner to open up the Data window. From there select the _Upload_ menu and then _Simple Upload from Desktop_.
 
